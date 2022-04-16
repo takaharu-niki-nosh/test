@@ -4,12 +4,21 @@ on:
     branches:
       - 'develop'
 jobs:
+  check-gh-pr-exist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - id: check
+        run: ::set-output name=RESULT::`gh pr list --base main --head develop | awk '{print $3}'`
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - if: ${{ steps.check.outputs.RESULT != 'develop' }}
   gh-pr-create:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: ff
-        if: ${{ gh pr list --base main --head develop | awk '{print $3}' != 'develop' }}
+        if: ${{ `gh pr list --base main --head develop | awk '{print $3}'` != 'develop' }}
         run: gh pr create --head develop --base main --title Release`date "+%Y%m%d"` --body 'This is pull request for release.'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
