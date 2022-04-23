@@ -1,0 +1,13 @@
+name: Assign reviewer for Pull Reqeust
+on: 
+  pull_request:
+    branches:
+      - 'develop'
+jobs:
+  gh-pr-edit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        run: gh pr edit --add-reviewer takaharu-niki-nosh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
