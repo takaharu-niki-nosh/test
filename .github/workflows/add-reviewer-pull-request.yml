@@ -1,8 +1,9 @@
 name: Assign reviewer for Pull Reqeust
-on: 
-  pull_request:
-    branches:
-      - 'develop'
+on: pull_request
+# on: 
+#   pull_request:
+#     branches:
+#       - 'develop'
 jobs:
   gh-pr-edit:
     runs-on: ubuntu-latest
