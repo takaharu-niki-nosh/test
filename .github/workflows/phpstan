@@ -1,6 +1,6 @@
 name: phpstan
 on:
-  push:
+  push
 jobs:
   phpstan:
     runs-on: ubuntu-latest
