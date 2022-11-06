@@ -3,7 +3,7 @@ on:
   push:
     branches-ignore:
       - 'master'
-      - 'devlop'
+     # - 'devlop'
 jobs:
   phpstan:
     runs-on: ubuntu-latest
