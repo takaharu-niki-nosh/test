@@ -1,6 +1,9 @@
 name: phpstan
 on:
-  push
+  push:
+    branches-ignore:
+      - 'master'
+      - 'develop'
 jobs:
   phpstan:
     runs-on: ubuntu-latest
@@ -20,6 +23,8 @@ jobs:
       #     tools: composer, cs2pr, phpstan
       #     coverage: none
 
+      - uses: actions/checkout@v3
+      - run: pwd
       - name: Run PHPStan
         run: ./vendor/bin/phpstan analyse --memory-limit=3G
       # - name: Composer install
