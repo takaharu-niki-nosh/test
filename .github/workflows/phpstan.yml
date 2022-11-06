@@ -20,6 +20,7 @@ jobs:
       #     tools: composer, cs2pr, phpstan
       #     coverage: none
 
+      - run: pwd
       - name: Run PHPStan
         run: ./vendor/bin/phpstan analyse --memory-limit=3G
       # - name: Composer install
