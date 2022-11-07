@@ -15,11 +15,15 @@ jobs:
       - name: echo pull_request.number
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo ${{ github.event.repository.pull_url }}
+        run: echo ${{ github.event.repository.pulls_url }}
       - name: echo pull_request.number
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo ${{ github.repository.pull_url }}
+        run: echo ${{ github.repository.pulls_url }}
+      - name: echo pull_request.number
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo ${{ toJSON(github.event).env.repository.pulls_url }}
       - name: get file names have diff
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
