@@ -5,22 +5,10 @@ jobs:
   phpstan:
     runs-on: ubuntu-latest
     steps:
-      - env:
-          EVENT_CONTEXT: ${{ toJSON(github.event) }}
-        run: |
-          echo $EVENT_CONTEXT
       - name: echo pull_request.number
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo ${{ github.event.repository.pulls_url }}
-      - name: echo pull_request.number
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo ${{ github.repository.pulls_url }}
-      - name: echo pull_request.number
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo ${{ toJSON(github.event).env.repository.pulls_url }}
+        run: echo ${{ github.event.pull_request.number }}
       - name: get file names have diff
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,22 +26,11 @@ jobs:
         with:
           php-version: '7.1'
           tools: phpstan
-      # - uses: actions/checkout@v3
 
-      # - uses: actions/checkout@v2
-      # - name: Setup PHP
-      #   uses: shivammathur/setup-php@v2
-      #   with:
-      #     php-version: '7.1'
-      #     tools: composer, cs2pr, phpstan
-      #     coverage: none
 
       - uses: actions/checkout@v3
       - run: composer require phpstan/phpstan
       - run: pwd
       - name: Run PHPStan
         run: ./vendor/bin/phpstan analyse --memory-limit=3G
-      # - name: Composer install
-      #   run: composer install
-      # - name: Run phpstan
-      #   run: ./vendor/bin/phpstan analyze --memory-limit=3G
+
