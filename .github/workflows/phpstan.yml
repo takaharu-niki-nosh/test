@@ -1,34 +1,42 @@
 name: phpstan
 on:
-  push:
-    branches-ignore:
-      - 'master'
-      - 'develop'
+  pull_request
 jobs:
   phpstan:
     runs-on: ubuntu-latest
     steps:
+      - name: "get creator of pull request to except from reviewer"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo `gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -c '.[].filename' | xargs`
+      - name: "get creator of pull request to except from reviewer"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "files=`gh pr diff --name-only ${{ github.event.pull_request.number }} | xargs`" >> $GITHUB_ENV
+      - name: "get creator of pull request to except from reviewer"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "files2=`gh api \
+            -H "Accept: application/vnd.github+json" \
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -c '.[].filename' | xargs`" >> $GITHUB_ENV
+      - name: echo env.files
+        run: echo ${{ env.files }}
+      - name: echo env.files
+        run: echo ${{ env.files2 }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.1'
           tools: phpstan
-      # - uses: actions/checkout@v3
 
-      # - uses: actions/checkout@v2
-      # - name: Setup PHP
-      #   uses: shivammathur/setup-php@v2
-      #   with:
-      #     php-version: '7.1'
-      #     tools: composer, cs2pr, phpstan
-      #     coverage: none
 
       - uses: actions/checkout@v3
       - run: composer require phpstan/phpstan
       - run: pwd
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan analyse --memory-limit=3G
-      # - name: Composer install
-      #   run: composer install
-      # - name: Run phpstan
-      #   run: ./vendor/bin/phpstan analyze --memory-limit=3G
+        run: ./vendor/bin/phpstan analyse --memory-limit=3G ${{ env.files }}
+
