@@ -1,6 +1,7 @@
 name: phpstan
 on:
   pull_request:
+    types: [opened, reopened, unlabeled]
     branches-ignore:
       - 'master'
       - 'develop'
