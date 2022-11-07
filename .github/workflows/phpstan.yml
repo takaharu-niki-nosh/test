@@ -1,7 +1,6 @@
 name: phpstan
 on:
-  pull_request:
-    types: [opened, reopened, unlabeled]
+  pull_request
 jobs:
   phpstan:
     runs-on: ubuntu-latest
