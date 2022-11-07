@@ -16,6 +16,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          echo "files=.github/workflows/phpstan.yml aaa.tzt" >> $GITHUB_ENV
+      - name: "get creator of pull request to except from reviewer"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           echo "files=`gh api \
             -H "Accept: application/vnd.github+json" \
             /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[].filename'`" >> $GITHUB_ENV
