@@ -14,7 +14,7 @@ jobs:
         run: echo ${{ github.event.pull_request.number }}
       - name: get file names have diff
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: echo "files=`gh pr diff --name-only ${{ github.event.pull_request.number }}`" >> $GITHUB_ENV
       - name: echo env.files
         run: echo ${{ env.files }}
