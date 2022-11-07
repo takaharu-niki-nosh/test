@@ -11,21 +11,22 @@ jobs:
         run: |
           echo `gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -c '.[].filename'`
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -c '.[].filename' | xargs`
+      - name: "get creator of pull request to except from reviewer"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "files=`gh pr diff --name-only ${{ github.event.pull_request.number }} | xargs`" >> $GITHUB_ENV
       - name: "get creator of pull request to except from reviewer"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "files=.github/workflows/phpstan.yml aaa.tzt" >> $GITHUB_ENV
-      - name: "get creator of pull request to except from reviewer"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "files=`gh api \
+          echo "files2=`gh api \
             -H "Accept: application/vnd.github+json" \
             /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -c '.[].filename' | xargs`" >> $GITHUB_ENV
       - name: echo env.files
         run: echo ${{ env.files }}
+      - name: echo env.files
+        run: echo ${{ env.files2 }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
