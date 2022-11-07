@@ -5,10 +5,6 @@ jobs:
   phpstan:
     runs-on: ubuntu-latest
     steps:
-      - name: get file names have diff
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo `gh pr diff --name-only ${{ github.event.pull_request.number }}`
       - name: "get creator of pull request to except from reviewer"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -20,15 +16,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo `gh api \
+          echo "files=`gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[]`
-      - name: echo env.files
-        run: echo ${{ env.files }}
-      - name: get file names have diff2
-        run: echo "files=`gh pr diff --name-only ${{ github.event.pull_request.number }}`" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[].filename'`" >> $GITHUB_ENV
       - name: echo env.files
         run: echo ${{ env.files }}
       - name: Setup PHP
@@ -42,5 +32,5 @@ jobs:
       - run: composer require phpstan/phpstan
       - run: pwd
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan analyse --memory-limit=3G
+        run: ./vendor/bin/phpstan analyse --memory-limit=3G ${{ env.files }}
 
