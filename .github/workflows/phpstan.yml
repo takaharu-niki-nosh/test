@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "files=`gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -c '.[].filename'`" >> $GITHUB_ENV
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -c '.[].filename' | xargs`" >> $GITHUB_ENV
       - name: echo env.files
         run: echo ${{ env.files }}
       - name: Setup PHP
