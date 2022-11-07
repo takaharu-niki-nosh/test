@@ -8,14 +8,14 @@ jobs:
       - name: get file names have diff
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo gh pr diff --name-only ${{ github.event.pull_request.number }}
+        run: echo `gh pr diff --name-only ${{ github.event.pull_request.number }}`
       - name: "get creator of pull request to except from reviewer"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo gh api \
+          echo `gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files`
       - name: echo env.files
         run: echo ${{ env.files }}
       - name: get file names have diff2
