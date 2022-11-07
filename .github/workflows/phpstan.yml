@@ -8,6 +8,10 @@ jobs:
   phpstan:
     runs-on: ubuntu-latest
     steps:
+      - name: get file names have diff
+        run: echo "files=`gh pr diff --name-only ${{ github.event.pull_request.number }}`" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
