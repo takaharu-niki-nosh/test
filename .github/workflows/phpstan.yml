@@ -11,7 +11,7 @@ jobs:
         run: |
           echo `gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[].filename'`
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -cr '.[].filename'`
       - name: "get creator of pull request to except from reviewer"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "files=`gh api \
             -H "Accept: application/vnd.github+json" \
-            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -r '.[].filename'`" >> $GITHUB_ENV
+            /repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files | jq -cr '.[].filename'`" >> $GITHUB_ENV
       - name: echo env.files
         run: echo ${{ env.files }}
       - name: Setup PHP
